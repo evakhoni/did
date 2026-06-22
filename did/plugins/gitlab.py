@@ -293,8 +293,13 @@ class GitLab():
         if GITLAB_API < 4:
             # Not supported
             return []
-        query = f'users/{user_id}/events?after={since - 1}&before={until}'
-        return self._get_gitlab_api_list(query, since, True)
+        endpoint = f'users/{user_id}/events'
+        params = {
+            'after': since - 1,
+            'before': until
+            }
+        return self._get_gitlab_api_list(
+            endpoint, params=params, since=since, get_all_results=True)
 
     def search(self, user, since, until, *, target_type, action_name):
         """ Perform GitLab query """
